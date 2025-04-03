@@ -3,7 +3,7 @@
 
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <title>
-  SHC2024 - Serverless login · xKayniT
+  OWASP TOP 10 - Insecure Design · xKayniT
 </title>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,31 +13,32 @@
 
 
 <meta name="author" content="xKayniT">
-<meta name="description" content="SHC 2024 write up for Serverless login challenge">
+<meta name="description" content="Fourth OWASP top 10 vulnerabilities - Insecure Design">
 <meta name="keywords" content="blog,developer,cybersecurity">
 
 
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="SHC2024 - Serverless login">
-  <meta name="twitter:description" content="SHC 2024 write up for Serverless login challenge">
+  <meta name="twitter:title" content="OWASP TOP 10 - Insecure Design">
+  <meta name="twitter:description" content="Fourth OWASP top 10 vulnerabilities - Insecure Design">
 
-<meta property="og:url" content="http://localhost:1313/posts/shc_2024_serverless-login/">
+<meta property="og:url" content="http://localhost:1313/posts/owasp_insecure_design/">
   <meta property="og:site_name" content="xKayniT">
-  <meta property="og:title" content="SHC2024 - Serverless login">
-  <meta property="og:description" content="SHC 2024 write up for Serverless login challenge">
+  <meta property="og:title" content="OWASP TOP 10 - Insecure Design">
+  <meta property="og:description" content="Fourth OWASP top 10 vulnerabilities - Insecure Design">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-05-13T00:00:00+00:00">
-    <meta property="article:modified_time" content="2024-05-13T00:00:00+00:00">
+    <meta property="article:published_time" content="2025-03-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-03-26T00:00:00+00:00">
     <meta property="article:tag" content="Xkaynit">
+    <meta property="article:tag" content="Post">
     <meta property="article:tag" content="Web">
 
 
 
 
-<link rel="canonical" href="http://localhost:1313/posts/shc_2024_serverless-login/">
+<link rel="canonical" href="http://localhost:1313/posts/owasp_insecure_design/">
 
 
 <link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -140,8 +141,8 @@
       <header>
         <div class="post-title">
           <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/posts/shc_2024_serverless-login/">
-              SHC2024 - Serverless login
+            <a class="title-link" href="http://localhost:1313/posts/owasp_insecure_design/">
+              OWASP TOP 10 - Insecure Design
             </a>
           </h1>
         </div>
@@ -149,8 +150,8 @@
           <div class="date">
             <span class="posted-on">
               <i class="fa-solid fa-calendar" aria-hidden="true"></i>
-              <time datetime="2024-05-13T00:00:00Z">
-                May 13, 2024
+              <time datetime="2025-03-26T00:00:00Z">
+                March 26, 2025
               </time>
             </span>
             <span class="reading-time">
@@ -170,6 +171,10 @@
     </span>
       <span class="separator">•</span>
     <span class="tag">
+      <a href="/tags/post/">Post</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
       <a href="/tags/web/">Web</a>
     </span></div>
 
@@ -178,54 +183,59 @@
 
       <div class="post-content">
         
-        <h1 id="shc-2024">
-  SHC 2024
-  <a class="heading-link" href="#shc-2024">
+        <h1 id="fourth-owasp-top-10-vulnerabilities---insecure-design">
+  Fourth OWASP top 10 vulnerabilities - Insecure Design
+  <a class="heading-link" href="#fourth-owasp-top-10-vulnerabilities---insecure-design">
     <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
     <span class="sr-only">Link to heading</span>
   </a>
 </h1>
-<h2 id="serverless-login">
-  serverless-login
-  <a class="heading-link" href="#serverless-login">
+<h2 id="introduction">
+  Introduction
+  <a class="heading-link" href="#introduction">
     <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
     <span class="sr-only">Link to heading</span>
   </a>
 </h2>
-<ol>
-<li><strong>Introduction</strong></li>
-</ol>
-<p>This writeup is about the serverless-login challenge of the Swiss Hacking Challenge 2024. Here is the description of the challenge :</p>
-<p><em>Imagine you&rsquo;re throwing a party. You could buy all the food, drinks, and decorations, prepare everything yourself, and then clean up afterwards. That&rsquo;s like running your own servers. You have total control, but it&rsquo;s a lot of work and expense.
-Now, imagine instead you decide to hold your party at a restaurant. They handle the food, drinks, and clean-up. You just pay for what you consume. That&rsquo;s like serverless computing. You don&rsquo;t worry about the infrastructure; you just focus on having a great party (or in this case, building a great app). However, there seems to have been a misunderstanding about the term serverless&hellip;</em></p>
-<p>This challenge need to launch on a private instance.</p>
-<ol start="2">
-<li><strong>Analysis</strong></li>
-</ol>
-<p>When I start the challenge and click on the instance, I arrive in the page below :</p>
-<p><img src="https://gist.github.com/assets/104362418/751231a1-e1ad-45bd-bcd5-a57dd21d9e55" alt="image"></p>
-<p>As we can see, it&rsquo;s a login page. I tried differents things like an apostrophe to know if it&rsquo;s an SQL injection but without results. After this phase, I have started to analyse the source code of the page and I found a <strong>python script</strong>. A login function is present in the script composed with the following code :</p>
-<pre><code>db = sqlite3.connect(&quot;database.db&quot;)
-username = document.querySelector(&quot;#username&quot;).value
-password = document.querySelector(&quot;#password&quot;).value
-passord_hash = hashlib.sha256(password.encode(&quot;utf-8&quot;)).hexdigest()
-data = db.execute(&quot;SELECT * FROM login WHERE username=? and password=?&quot;, (username, passord_hash)).fetchone()
-if data is not None:
-    master_key = int.from_bytes(bytes(password, &quot;utf-8&quot;))
-    cipher = aes.aes(master_key, 128, mode=&quot;CTR&quot;, padding=&quot;PKCS#7&quot;, iv=IV)
-    decrypted_flag = &quot;&quot;.join([chr(x) for x in cipher.dec(FLAG)])
-    toggle(&quot;flag&quot;)
-    document.querySelector(&quot;#flag-text&quot;).innerHTML = f&quot;Congratluations! You solved the challenge. Here's your flag: &lt;b&gt;{decrypted_flag}&lt;/b&gt;&quot;
-else:
-    toggle(&quot;failed&quot;)`
-</code></pre>
-<p>This function load a database which can be downloaded. With a SQL database viewer, I can see the contained entry which is &ldquo;admin&rdquo; for user and &ldquo;11a4a60b518bf24989d481468076e5d5982884626aed9faeb35b8576fcd223e1&rdquo; for the password hash.</p>
-<ol start="3">
-<li><strong>Solution</strong></li>
-</ol>
-<p>With a Google Dork(Google Keyword Research), it&rsquo;s possible to know the value of corresponding hash. <strong>intext:11a4a60b518bf24989d481468076e5d5982884626aed9faeb35b8576fcd223e1</strong> can find the hash in text of all websites referenced in Google(more precisions <a href="https://gist.github.com/sundowndev/283efaddbcf896ab405488330d1bbc06"  class="external-link" target="_blank" rel="noopener">here</a>). It&rsquo;s matched with the string &ldquo;python&rdquo;. Finally, we have the username,password and the flag that appears when you fill the login form.</p>
-<p><img src="https://gist.github.com/assets/104362418/e2b45399-9933-43a0-b56f-5fd7aea038c2" alt="image-1"></p>
-<p>FLAG : <strong>shc2024{wh0_N33d5_4_53RV3r_4nYw4Y2?}</strong></p>
+<p>This article is the fourth of a series of ten, for more information about the serie please refer to the first article. The first part will introduce what the vulnerability does and the impact of it on website, there is no practical example for this article due to the nature of the vulnerability. Finally, the last part will described the best practices to mitigate/delete vulnerable components. This article is focus on <a href="https://owasp.org/Top10/A04_2021-Insecure_Design/"  class="external-link" target="_blank" rel="noopener">insecure design</a>.</p>
+<h2 id="insecure-design">
+  Insecure Design
+  <a class="heading-link" href="#insecure-design">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>In this part, OWASP dissociate design part and implementation. A secure design can have implementation defects which can lead to vulnerabilities may be exploited by an attacker. On another hand, an insecure design cannot be fixed by a perfect implementation. One factor contributing to insecure design is the lack of business risk on the software for example. By definition, <strong>secure design</strong> is a practice to ensure that code is robustly designed and tested to prevent known attack methods. However, a threat modeling can help identify the flaws or defects caused by a insecure design, a tool such <strong>Microsoft Threat Modeling tool</strong> can help with that. Furthermore, it is better to be sure on the quality of the design before starting to implement it, discussion with security specialists should be an essential part of the design.</p>
+<h2 id="means-of-prevention">
+  Means of prevention
+  <a class="heading-link" href="#means-of-prevention">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>As explain a bit in the previous part, there are different ways to prevent from this vulnerability :</p>
+<ul>
+<li>
+<p>Use threat modeling for critical authentication, access control, business logic, and key flows.</p>
+</li>
+<li>
+<p>Integrate security language and controls in accordance with use cases of the application.</p>
+</li>
+<li>
+<p>Write unit and integration tests to validate that all critical flows are resistant to the threat model.</p>
+</li>
+<li>
+<p>Limit resource consumption by user or service.</p>
+</li>
+</ul>
+<h2 id="conclusion">
+  Conclusion
+  <a class="heading-link" href="#conclusion">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>Secure Design is a culture that each developer need to have. All the failure in an application shall be controled and expected. Documentations for other developers is mandatory to understand how the application works. Finally, secure design and more precisely secure software requires a secure devolpment lifecycle from scratch.</p>
 
       </div>
 
